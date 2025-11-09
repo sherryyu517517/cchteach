@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>報到系統 | 佳里奇美醫院114年度餐敘</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #0b1c2c;
+      color: #f1f1f1;
+      background-image: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 40%),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05), transparent 40%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #ffcc66 !important;
+    }
+
+    .nav-link {
+      color: #eee !important;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      color: #ffcc66 !important;
+    }
+
+    h2 {
+      color: #ffcc66;
+      font-weight: 600;
+    }
+
+    iframe {
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      height: 80vh;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      background: #fff;
+    }
+
+    footer {
+      text-align: center;
+      color: #ccc;
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      margin-top: 60px;
+      font-size: 0.95rem;
+    }
+
+    .refresh-btn {
+      background-color: #ffcc66;
+      color: #000;
+      border: none;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-bottom: 15px;
+      transition: 0.3s;
+    }
+
+    .refresh-btn:hover {
+      background-color: #ffd866;
+      transform: scale(1.05);
+    }
+
+    .timer {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 導覽列 -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">佳里奇美醫院114年度餐敘</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+          <li class="nav-item"><a class="nav-link" href="schedule.html">活動流程</a></li>
+          <li class="nav-item"><a class="nav-link" href="teachers.html">教師芳名錄</a></li>
+          <li class="nav-item"><a class="nav-link active" href="checkin.html">報到系統</a></li>
+          <li class="nav-item"><a class="nav-link" href="survey.html">滿意度調查</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主內容 -->
+  <main class="container my-5 pt-5 text-center">
+    <h2 class="mb-4 mt-5">📝 線上報到表單</h2>
+    <p class="mb-4 text-light">請與會人員於現場掃描或點擊下方表單進行報到。</p>
+
+    <!-- Google Form 報到表單 -->
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfRD9jGQfE1KKhZL-e5GbQxMqrxF_jUktrbTq1ZPX-aTYYuA/viewform?embedded=true" 
+            frameborder="0" marginheight="0" marginwidth="0">
+      載入中…
+    </iframe>
+
+    <hr class="my-5">
+
+    <h2 class="mb-3">✅ 即時報到統計與名單</h2>
+    <p class="text-light">可手動重新整理，或等待每 30 秒自動更新。</p>
+
+    <!-- 刷新按鈕與倒數 -->
+    <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+      <button class="refresh-btn" onclick="refreshSheet()">⟳ 重新整理名單</button>
+      <span id="countdown" class="timer"></span>
+    </div>
+
+    <!-- Google Sheet 統計與名單 -->
+    <iframe id="sheetFrame"
+      src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWrUlYBT1UZlStu0-z162vUHPcHT4LfDh8gAYUpkHPvaLLk6Iex2f693Tyin1ghVOD1YumyLhGtCA/pubhtml?gid=111564405&single=true"
+      frameborder="0" marginheight="0" marginwidth="0" height="600">
+      載入中…
+    </iframe>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer>
+    © 2025 佳里奇美醫院．教學研究組 | Designed for 114年度餐敘
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const frame = document.getElementById('sheetFrame');
+    const countdownEl = document.getElementById('countdown');
+    let counter = 30;
+
+    function refreshSheet() {
+      const src = frame.src;
+      frame.src = src;
+      counter = 30;
+    }
+
+    setInterval(() => {
+      counter--;
+      if (counter <= 0) {
+        refreshSheet();
+      }
+      countdownEl.textContent = `⏳ ${counter} 秒後自動更新`;
+    }, 1000);
+  </script>
+</body>
+</html>
