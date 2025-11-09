@@ -12,45 +12,29 @@ body {
     margin:0; padding:0;
     min-height:100vh;
     overflow-x:hidden;
-    color:#000;
-    position:relative;
     background: linear-gradient(135deg,#E6E6FA,#FFFFFF);
+    position: relative;
 }
-
-/* 漂浮氣泡 */
+/* 漂浮泡泡 */
 .bubble {
     position:absolute;
     border-radius:50%;
-    opacity:0.5;
+    opacity:0.4;
     pointer-events:none;
     z-index:0;
 }
-
 /* 導覽列 */
 .navbar {
     background: rgba(10,10,10,0.85);
     backdrop-filter: blur(10px);
-    border-bottom:1px solid rgba(255,255,255,0.1);
     z-index:10;
 }
-/* 品牌 + 連結文字淺紫色 */
-.navbar-brand, 
-.navbar-nav .nav-link { 
-    color:#D8BFD8 !important; 
-    font-weight:700; 
-}
-.navbar-nav .nav-link:hover, 
-.navbar-nav .nav-link.active { 
-    color:#9370DB !important; 
-}
-
-/* 標題 */
-h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
+.navbar-brand, .navbar-nav .nav-link { color:#D8BFD8 !important; font-weight:700; }
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color:#9370DB !important; }
 
 /* 卡片 */
 .card {
     background: rgba(255,255,255,0.85);
-    color:#000;
     border-radius:15px;
     padding:25px;
     box-shadow:0 10px 25px rgba(0,0,0,0.4);
@@ -58,17 +42,19 @@ h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
     position:relative;
     z-index:1;
 }
-
-/* iframe */
-iframe {
-    border:none;
-    border-radius:12px;
+/* 表格 */
+#checkinTable {
     width:100%;
-    height:600px;
-    background:#fff;
-    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    border-collapse: collapse;
 }
-
+#checkinTable th, #checkinTable td {
+    padding:10px;
+    border:1px solid #ccc;
+}
+#checkinTable tr.checked-in {
+    background-color: #D8BFD8;
+    color:#000;
+}
 /* 按鈕 */
 .refresh-btn {
     background: linear-gradient(90deg,#4B0082,#7B68EE);
@@ -83,16 +69,12 @@ iframe {
     background: linear-gradient(90deg,#7B68EE,#9370DB);
     transform:scale(1.05);
 }
-
-.timer { font-size:0.9rem; color:#4B0082; }
-main.container { position:relative; z-index:2; padding-top:100px; padding-bottom:50px; }
+main.container {position:relative; z-index:2; padding-top:100px; padding-bottom:50px;}
 footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); padding:15px; font-size:0.95rem; margin-top:60px; position:relative; z-index:1; }
-.text-center{text-align:center;}
 </style>
 </head>
 <body>
 
-<!-- 導覽列 -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 <div class="container">
 <a class="navbar-brand" href="index.html">佳里奇美醫院114年度餐敘</a>
@@ -113,29 +95,47 @@ footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); paddi
 
 <main class="container">
 
-<!-- 線上報到表單 -->
 <div class="text-center mb-5">
 <h2>📝 線上報到表單</h2>
-<p class="text-dark">請與會人員於現場掃描或點擊下方表單進行報到</p>
-</div>
-<div class="card mb-4">
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfRD9jGQfE1KKhZL-e5GbQxMqrxF_jUktrbTq1ZPX-aTYYuA/viewform?embedded=true"></iframe>
+<p class="text-dark">請與會人員於現場填寫下方表單報到</p>
 </div>
 
-<!-- 即時名單 -->
+<div class="card mb-4">
+<form id="checkinForm">
+<div class="mb-3">
+<label for="name" class="form-label">姓名</label>
+<input type="text" class="form-control" id="name" required>
+</div>
+<div class="mb-3">
+<label for="title" class="form-label">職稱</label>
+<input type="text" class="form-control" id="title">
+</div>
+<div class="mb-3">
+<label for="role" class="form-label">身分別</label>
+<input type="text" class="form-control" id="role">
+</div>
+<button type="submit" class="btn btn-primary">報到</button>
+</form>
+</div>
+
 <div class="text-center mb-4">
 <h2>✅ 即時報到名單</h2>
-<p class="text-dark">可手動重新整理，或等待每 30 秒自動更新</p>
+<p class="text-dark">已報到者將高亮顯示</p>
 <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
-  <button class="refresh-btn" onclick="refreshSheet()">⟳ 重新整理名單</button>
-  <span id="countdown" class="timer"></span>
+<button class="refresh-btn" onclick="loadCheckinList()">⟳ 重新整理名單</button>
+<span id="countdown" class="timer"></span>
 </div>
 </div>
+
 <div class="card mb-4">
-<iframe id="sheetFrame" 
-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWrUlYBT1UZlStu0-z162vUHPcHT4LfDh8gAYUpkHPvaLLk6Iex2f693Tyin1ghVOD1YumyLhGtCA/pubhtml?gid=111564405&single=true">
-載入中…
-</iframe>
+<table id="checkinTable">
+<thead>
+<tr><th>人士號</th><th>姓名</th><th>職稱</th><th>身分別</th><th>報到狀態</th><th>報到時間</th><th>備註</th></tr>
+</thead>
+<tbody>
+<!-- 名單由 JS 填入 -->
+</tbody>
+</table>
 </div>
 
 </main>
@@ -146,9 +146,9 @@ src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWrUlYBT1UZlStu0-z162vUHP
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// -------------------------
+// --------------------------
 // 漂浮泡泡背景
-// -------------------------
+// --------------------------
 const bubbleColors=['#E6E6FA','#D8BFD8','#F0F8FF','#DDA0DD','#DA70D6','#9370DB'];
 const bubbles=[];
 const bubbleCount=40;
@@ -167,7 +167,6 @@ for(let i=0;i<bubbleCount;i++){
   document.body.appendChild(b);
   bubbles.push({el:b, x:parseFloat(b.style.left), y:parseFloat(b.style.top), dx:(Math.random()-0.5)*0.5, dy:-Math.random()*0.7-0.2});
 }
-
 function animateBubbles(){
   bubbles.forEach(b=>{
     b.x += b.dx;
@@ -182,18 +181,58 @@ function animateBubbles(){
 }
 animateBubbles();
 
-// -------------------------
-// Google Sheet 刷新
-// -------------------------
-const frame=document.getElementById('sheetFrame');
-const countdownEl=document.getElementById('countdown');
+// --------------------------
+// 前端模擬即時報到
+// --------------------------
+const WEB_APP_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE'; // 填入你的 Web App URL
+let checkinList=[];
+
+function loadCheckinList(){
+  fetch(WEB_APP_URL)
+  .then(res=>res.json())
+  .then(data=>{
+    checkinList = data;
+    const tbody=document.querySelector('#checkinTable tbody');
+    tbody.innerHTML='';
+    checkinList.forEach(item=>{
+      const tr=document.createElement('tr');
+      if(item.status==='已報到') tr.classList.add('checked-in');
+      tr.innerHTML=`<td>${item.id}</td><td>${item.name}</td><td>${item.title}</td><td>${item.role}</td><td>${item.status}</td><td>${item.time}</td><td>${item.note}</td>`;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(err=>console.error(err));
+  counter=30;
+}
+
+// 提交報到
+document.getElementById('checkinForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const id=Math.floor(Math.random()*10000);
+  const name=document.getElementById('name').value;
+  const title=document.getElementById('title').value;
+  const role=document.getElementById('role').value;
+  fetch(WEB_APP_URL,{
+    method:'POST',
+    body: JSON.stringify({id, name, title, role}),
+  })
+  .then(res=>res.json())
+  .then(()=>{ loadCheckinList(); })
+  .catch(err=>console.error(err));
+  e.target.reset();
+});
+
+// 自動倒數刷新
 let counter=30;
-function refreshSheet(){ frame.src=frame.src; counter=30; }
+const countdownEl=document.getElementById('countdown');
 setInterval(()=>{
   counter--;
-  if(counter<=0) refreshSheet();
+  if(counter<=0) loadCheckinList();
   countdownEl.textContent=`⏳ ${counter} 秒後自動更新`;
 },1000);
+
+// 初始化載入
+loadCheckinList();
 </script>
 </body>
 </html>
