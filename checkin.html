@@ -18,7 +18,7 @@
     }
 
     .navbar {
-      background: rgba(10, 10, 10, 0.7);
+      background: rgba(10, 10, 10, 0.8);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
@@ -33,7 +33,8 @@
       font-weight: 500;
     }
 
-    .nav-link:hover {
+    .nav-link:hover,
+    .nav-link.active {
       color: #ffcc66 !important;
     }
 
@@ -42,22 +43,21 @@
       font-weight: 600;
     }
 
+    .card {
+      background: rgba(30, 42, 58, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      margin-bottom: 40px;
+    }
+
     iframe {
       border: none;
       border-radius: 10px;
       width: 100%;
-      height: 80vh;
+      height: 800px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
       background: #fff;
-    }
-
-    footer {
-      text-align: center;
-      color: #ccc;
-      background: rgba(255,255,255,0.05);
-      padding: 15px;
-      margin-top: 60px;
-      font-size: 0.95rem;
     }
 
     .refresh-btn {
@@ -67,7 +67,6 @@
       font-weight: 600;
       border-radius: 8px;
       padding: 10px 20px;
-      margin-bottom: 15px;
       transition: 0.3s;
     }
 
@@ -80,9 +79,17 @@
       font-size: 0.9rem;
       color: #aaa;
     }
+
+    footer {
+      text-align: center;
+      color: #ccc;
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      margin-top: 60px;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
-
 <body>
   <!-- 導覽列 -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -104,33 +111,36 @@
   </nav>
 
   <!-- 主內容 -->
-  <main class="container my-5 pt-5 text-center">
-    <h2 class="mb-4 mt-5">📝 線上報到表單</h2>
-    <p class="mb-4 text-light">請與會人員於現場掃描或點擊下方表單進行報到。</p>
-
-    <!-- Google Form 報到表單 -->
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfRD9jGQfE1KKhZL-e5GbQxMqrxF_jUktrbTq1ZPX-aTYYuA/viewform?embedded=true" 
-            frameborder="0" marginheight="0" marginwidth="0">
-      載入中…
-    </iframe>
-
-    <hr class="my-5">
-
-    <h2 class="mb-3">✅ 即時報到統計與名單</h2>
-    <p class="text-light">可手動重新整理，或等待每 30 秒自動更新。</p>
-
-    <!-- 刷新按鈕與倒數 -->
-    <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
-      <button class="refresh-btn" onclick="refreshSheet()">⟳ 重新整理名單</button>
-      <span id="countdown" class="timer"></span>
+  <main class="container my-5 pt-5">
+    <div class="text-center mb-5">
+      <h2>📝 線上報到表單</h2>
+      <p class="text-light">請與會人員於現場掃描或點擊下方表單進行報到。</p>
     </div>
 
-    <!-- Google Sheet 統計與名單 -->
-    <iframe id="sheetFrame"
-      src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWrUlYBT1UZlStu0-z162vUHPcHT4LfDh8gAYUpkHPvaLLk6Iex2f693Tyin1ghVOD1YumyLhGtCA/pubhtml?gid=111564405&single=true"
-      frameborder="0" marginheight="0" marginwidth="0" height="600">
-      載入中…
-    </iframe>
+    <div class="card">
+      <!-- Google Form 報到表單 -->
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfRD9jGQfE1KKhZL-e5GbQxMqrxF_jUktrbTq1ZPX-aTYYuA/viewform?embedded=true">
+        載入中…
+      </iframe>
+    </div>
+
+    <div class="text-center mb-5">
+      <h2>✅ 即時報到統計與名單</h2>
+      <p class="text-light">可手動重新整理，或等待每 30 秒自動更新。</p>
+      <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+        <button class="refresh-btn" onclick="refreshSheet()">⟳ 重新整理名單</button>
+        <span id="countdown" class="timer"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <!-- Google Sheet 統計與名單 -->
+      <iframe id="sheetFrame"
+        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWrUlYBT1UZlStu0-z162vUHPcHT4LfDh8gAYUpkHPvaLLk6Iex2f693Tyin1ghVOD1YumyLhGtCA/pubhtml?gid=111564405&single=true"
+        height="600">
+        載入中…
+      </iframe>
+    </div>
   </main>
 
   <!-- 頁尾 -->
