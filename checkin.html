@@ -99,6 +99,24 @@ h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
   color:#4B0082;
 }
 
+/* 序號與報到時間欄設定 */
+#checkinTable th:first-child,
+#checkinTable th:nth-child(6),
+#checkinTable td:first-child,
+#checkinTable td:nth-child(6) {
+  vertical-align: middle !important;
+  text-align: center !important;
+  white-space: nowrap;
+}
+
+/* 控制欄寬 */
+#checkinTable th:first-child, #checkinTable td:first-child {
+  width: 60px;
+}
+#checkinTable th:nth-child(6), #checkinTable td:nth-child(6) {
+  width: 160px;
+}
+
 footer {
   text-align:center;
   color:#555;
@@ -266,15 +284,6 @@ function columnFilter(colIndex, value){
   }
 }
 
-function filterTable(){
-  const filter=document.getElementById('globalSearch').value.toLowerCase();
-  const rows=tableBody.getElementsByTagName('tr');
-  for(let row of rows){
-    const text=row.textContent.toLowerCase();
-    row.style.display=text.includes(filter)?'':'none';
-  }
-}
-
 setInterval(()=>{
   counter--;
   if(counter<=0)fetchCheckinData();
@@ -286,5 +295,3 @@ fetchCheckinData();
 
 </body>
 </html>
-
-
