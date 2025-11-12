@@ -45,6 +45,16 @@ h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
 #checkinTable th:nth-child(6), #checkinTable td:nth-child(6) { width: 160px; }
 
 footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); padding:15px; font-size:0.95rem; margin-top:60px; }
+
+/* 手機版優化 */
+@media (max-width:768px){
+  .card { padding: 15px; }
+  .filter-input { font-size:0.75rem; padding:2px; }
+  #globalSearch { width: 100% !important; }
+  .refresh-btn { padding:8px 15px; font-size:0.9rem; }
+  #checkinTable th, #checkinTable td { font-size:0.75rem; padding:4px; }
+  .table-responsive { max-height:400px; }
+}
 </style>
 </head>
 <body>
@@ -107,11 +117,11 @@ footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); paddi
 <div class="text-center mb-4">
   <h2>✅ 即時報到名單</h2>
   <p class="text-dark">可手動重新整理，或每 20 秒自動更新</p>
-  <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+  <div class="d-flex justify-content-center align-items-center gap-3 mb-3 flex-wrap">
     <button class="refresh-btn" onclick="fetchCheckinData()">⟳ 手動更新名單</button>
     <span id="countdown" class="timer"></span>
   </div>
-  <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+  <div class="d-flex justify-content-center align-items-center gap-2 mb-3 flex-wrap">
     <input id="globalSearch" type="text" class="form-control w-50" placeholder="🔍 全欄搜尋（姓名、科別、單位、狀態）">
     <button class="refresh-btn" onclick="filterTable()">🔍 搜尋</button>
   </div>
@@ -128,9 +138,9 @@ footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); paddi
           <th>姓名<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(1,this.value)"></th>
           <th>科別<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(2,this.value)"></th>
           <th>單位<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3,this.value)"></th>
-          <th>狀態</th>
+          <th>狀態<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3,this.value)"></th>
           <th>報到時間</th>
-          <th>備註</th>
+          <th>備註<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3,this.value)"></th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -173,7 +183,7 @@ window.addEventListener('resize',()=>{width=window.innerWidth;height=window.inne
 // ------------------------
 // 設定與資料處理
 // ------------------------
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT8PHxSadUi-cL2B-kDpN9DkqqRopc7QLMaXDrgNziv-Jsj9jZ7EqtPTFQT_FhFadz/exec"; // 改成你的 Apps Script 網址
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT8PHxSadUi-cL2B-kDpN9DkqqRopc7QLMaXDrgNziv-Jsj9jZ7EqtPTFQT_FhFadz/exec";
 const tableBody = document.getElementById('tableBody');
 const countdownEl = document.getElementById('countdown');
 const statsEl = document.getElementById('stats');
@@ -192,7 +202,8 @@ identitySelect.addEventListener('change', ()=>{
     internalField.style.display='none';
     externalField.style.display='block';
   } else {
-    internalField.style.display=externalField.style.display='none';
+    internalField.style.display='none';
+    externalField.style.display='none';
   }
 });
 
