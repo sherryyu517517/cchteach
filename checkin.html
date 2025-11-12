@@ -8,136 +8,173 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 body {
-    font-family:'Noto Sans TC',sans-serif;
-    margin:0; padding:0;
-    min-height:100vh;
-    overflow-x:hidden;
-    background: linear-gradient(135deg,#E6E6FA,#FFFFFF);
-    position: relative;
+  font-family:'Noto Sans TC',sans-serif;
+  background: linear-gradient(135deg,#E6E6FA,#FFFFFF);
+  margin:0; padding:0; color:#000;
+  overflow-x:hidden;
+  position:relative;
 }
+
 /* 漂浮泡泡 */
 .bubble {
-    position:absolute;
-    border-radius:50%;
-    opacity:0.4;
-    pointer-events:none;
-    z-index:0;
+  position:absolute;
+  border-radius:50%;
+  opacity:0.5;
+  pointer-events:none;
+  z-index:0;
 }
-/* 導覽列 */
-.navbar {
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(10px);
-    z-index:10;
-}
-.navbar-brand, .navbar-nav .nav-link { color:#D8BFD8 !important; font-weight:700; }
-.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color:#9370DB !important; }
 
-/* 卡片 */
-.card {
-    background: rgba(255,255,255,0.85);
-    border-radius:15px;
-    padding:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.4);
-    margin-bottom:40px;
-    position:relative;
-    z-index:1;
+.navbar {
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
 }
-/* 表格 */
-#checkinTable {
-    width:100%;
-    border-collapse: collapse;
-}
-#checkinTable th, #checkinTable td {
-    padding:10px;
-    border:1px solid #ccc;
-}
-#checkinTable tr.checked-in {
-    background-color: #D8BFD8;
-    color:#000;
-}
-/* 按鈕 */
+.navbar-brand, .nav-link { color:#D8BFD8 !important; font-weight:700; }
+.nav-link:hover, .nav-link.active { color:#9370DB !important; }
+
+h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
+
+.card { background: rgba(255,255,255,0.9); border-radius:15px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); margin-bottom:40px; position:relative; z-index:1; }
+
 .refresh-btn {
-    background: linear-gradient(90deg,#4B0082,#7B68EE);
-    color:#fff;
-    border:none;
-    font-weight:600;
-    border-radius:10px;
-    padding:10px 25px;
-    transition:0.3s;
+  background: linear-gradient(90deg,#4B0082,#7B68EE);
+  color:#fff;
+  border:none;
+  font-weight:600;
+  border-radius:10px;
+  padding:10px 25px;
+  transition:0.3s;
 }
 .refresh-btn:hover {
-    background: linear-gradient(90deg,#7B68EE,#9370DB);
-    transform:scale(1.05);
+  background: linear-gradient(90deg,#7B68EE,#9370DB);
+  transform:scale(1.05);
 }
-main.container {position:relative; z-index:2; padding-top:100px; padding-bottom:50px;}
-footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); padding:15px; font-size:0.95rem; margin-top:60px; position:relative; z-index:1; }
+
+.timer { font-size:0.9rem; color:#4B0082; }
+
+/* 表格設定 */
+.table-responsive {
+  max-height: 600px;
+  overflow-y: auto;
+}
+#checkinTable thead.table-dark {
+  background-color: #D2B48C !important;
+  color: #4B0082 !important;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+#checkinTable tbody tr:nth-child(even) { background-color: #F3E8FF; }
+#checkinTable tbody tr:nth-child(odd) { background-color: #FFFFFF; }
+
+/* 已報到者樣式 */
+.checked td {
+  font-weight:700 !important;
+  color:#1E90FF !important;
+  background-color:#EAF6FF !important;
+}
+
+/* 篩選欄位 */
+.filter-input {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* 小字體 */
+.small-text {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* 統計區塊 */
+#stats { 
+  font-size:1rem;
+  font-weight:600;
+  margin-bottom:15px;
+  text-align:center;
+  color:#4B0082;
+}
+
+footer {
+  text-align:center;
+  color:#555;
+  background: rgba(255,255,255,0.1);
+  padding:15px;
+  font-size:0.95rem;
+  margin-top:60px;
+}
 </style>
 </head>
 <body>
 
+<!-- 導覽列 -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-<div class="container">
-<a class="navbar-brand" href="index.html">佳里奇美醫院114年度餐敘</a>
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-<ul class="navbar-nav">
-<li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
-<li class="nav-item"><a class="nav-link" href="schedule.html">活動流程</a></li>
-<li class="nav-item"><a class="nav-link" href="teachers.html">教師芳名錄</a></li>
-<li class="nav-item"><a class="nav-link active" href="checkin.html">報到系統</a></li>
-<li class="nav-item"><a class="nav-link" href="survey.html">滿意度調查</a></li>
-</ul>
-</div>
-</div>
+  <div class="container">
+    <a class="navbar-brand" href="index.html">佳里奇美醫院114年度餐敘</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+        <li class="nav-item"><a class="nav-link" href="schedule.html">活動流程</a></li>
+        <li class="nav-item"><a class="nav-link" href="teachers.html">教師芳名錄</a></li>
+        <li class="nav-item"><a class="nav-link active" href="checkin.html">報到系統</a></li>
+        <li class="nav-item"><a class="nav-link" href="survey.html">滿意度調查</a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-<main class="container">
+<main class="container" style="padding-top:100px;">
 
+<!-- 報到表單 -->
 <div class="text-center mb-5">
-<h2>📝 線上報到表單</h2>
-<p class="text-dark">請與會人員於現場填寫下方表單報到</p>
+  <h2>📝 線上報到表單</h2>
+  <p class="text-dark">請與會人員於現場掃描或點擊下方表單進行報到</p>
 </div>
-
 <div class="card mb-4">
-<form id="checkinForm">
-<div class="mb-3">
-<label for="name" class="form-label">姓名</label>
-<input type="text" class="form-control" id="name" required>
-</div>
-<div class="mb-3">
-<label for="title" class="form-label">職稱</label>
-<input type="text" class="form-control" id="title">
-</div>
-<div class="mb-3">
-<label for="role" class="form-label">身分別</label>
-<input type="text" class="form-control" id="role">
-</div>
-<button type="submit" class="btn btn-primary">報到</button>
-</form>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfRD9jGQfE1KKhZL-e5GbQxMqrxF_jUktrbTq1ZPX-aTYYuA/viewform?embedded=true"
+    width="100%" height="640" frameborder="0" marginheight="0" marginwidth="0">載入中…</iframe>
 </div>
 
+<!-- 即時名單 -->
 <div class="text-center mb-4">
-<h2>✅ 即時報到名單</h2>
-<p class="text-dark">已報到者將高亮顯示</p>
-<div class="d-flex justify-content-center align-items-center gap-3 mb-3">
-<button class="refresh-btn" onclick="loadCheckinList()">⟳ 重新整理名單</button>
-<span id="countdown" class="timer"></span>
-</div>
-</div>
-
-<div class="card mb-4">
-<table id="checkinTable">
-<thead>
-<tr><th>人事號</th><th>姓名</th><th>職稱</th><th>身分別</th><th>報到狀態</th><th>報到時間</th><th>備註</th></tr>
-</thead>
-<tbody>
-<!-- 名單由 JS 填入 -->
-</tbody>
-</table>
+  <h2>✅ 即時報到名單</h2>
+  <p class="text-dark">可手動重新整理，或每 20 秒自動更新</p>
+  <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+    <button class="refresh-btn" onclick="fetchCheckinData()">⟳ 手動更新名單</button>
+    <span id="countdown" class="timer"></span>
+  </div>
+  <input id="globalSearch" type="text" class="form-control w-50 mx-auto mb-3" placeholder="🔍 全欄搜尋（姓名、科別、單位、狀態）" onkeyup="filterTable()">
 </div>
 
+<div id="stats"></div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table align-middle text-center" id="checkinTable">
+      <thead class="table-dark">
+        <tr>
+          <th>序號</th>
+          <th>姓名<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(1, this.value)"></th>
+          <th>科別<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(2, this.value)"></th>
+          <th>單位/身分<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3, this.value)"></th>
+          <th>報到狀態<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(4, this.value)"></th>
+          <th>報到時間</th>
+          <th>備註<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(6, this.value)"></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="7" class="text-center text-muted">資料載入中...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </main>
 
 <footer>
@@ -145,95 +182,107 @@ footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); paddi
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// --------------------------
-// 漂浮泡泡背景
-// --------------------------
-const bubbleColors=['#E6E6FA','#D8BFD8','#F0F8FF','#DDA0DD','#DA70D6','#9370DB'];
-const bubbles=[];
-const bubbleCount=40;
-let width=window.innerWidth;
-let height=window.innerHeight;
 
+<!-- 漂浮泡泡背景 -->
+<script>
+const bubbleColors=['#E6E6FA','#D8BFD8','#F0F8FF','#DDA0DD','#DA70D6','#9370DB'];
+const bubbles=[]; const bubbleCount=40;
+let width=window.innerWidth, height=window.innerHeight;
 for(let i=0;i<bubbleCount;i++){
   let b=document.createElement('div');
   b.classList.add('bubble');
   let size=Math.random()*40+20;
-  b.style.width=size+'px';
-  b.style.height=size+'px';
-  b.style.left=Math.random()*width+'px';
-  b.style.top=Math.random()*height+'px';
+  b.style.width=size+'px'; b.style.height=size+'px';
+  b.style.left=Math.random()*width+'px'; b.style.top=Math.random()*height+'px';
   b.style.background=bubbleColors[Math.floor(Math.random()*bubbleColors.length)];
   document.body.appendChild(b);
-  bubbles.push({el:b, x:parseFloat(b.style.left), y:parseFloat(b.style.top), dx:(Math.random()-0.5)*0.5, dy:-Math.random()*0.7-0.2});
+  bubbles.push({el:b,x:parseFloat(b.style.left),y:parseFloat(b.style.top),dx:(Math.random()-0.5)*0.5,dy:-Math.random()*0.7-0.2});
 }
 function animateBubbles(){
   bubbles.forEach(b=>{
-    b.x += b.dx;
-    b.y += b.dy;
-    if(b.y + parseFloat(b.el.style.height)<0){ b.y=height; b.x=Math.random()*width; }
-    if(b.x<0) b.x=width;
-    if(b.x>width) b.x=0;
-    b.el.style.left=b.x+'px';
-    b.el.style.top=b.y+'px';
+    b.x+=b.dx; b.y+=b.dy;
+    if(b.y+parseFloat(b.el.style.height)<0){b.y=height; b.x=Math.random()*width;}
+    if(b.x<0) b.x=width; if(b.x>width) b.x=0;
+    b.el.style.left=b.x+'px'; b.el.style.top=b.y+'px';
   });
   requestAnimationFrame(animateBubbles);
 }
 animateBubbles();
+window.addEventListener('resize',()=>{width=window.innerWidth;height=window.innerHeight;});
+</script>
 
-// --------------------------
-// 前端模擬即時報到
-// --------------------------
-const WEB_APP_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE'; // 填入你的 Web App URL
-let checkinList=[];
+<!-- 資料載入 -->
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZxj65rXlINh9E9Ll_ukdTjAjrvPkooHyOHniPZ5kp-OMOdE15hVkGqBtWqRr2Wepe/exec";
+const tableBody=document.getElementById('tableBody');
+const countdownEl=document.getElementById('countdown');
+const statsEl=document.getElementById('stats');
+let counter=20;
 
-function loadCheckinList(){
-  fetch(WEB_APP_URL)
-  .then(res=>res.json())
-  .then(data=>{
-    checkinList = data;
-    const tbody=document.querySelector('#checkinTable tbody');
-    tbody.innerHTML='';
-    checkinList.forEach(item=>{
-      const tr=document.createElement('tr');
-      if(item.status==='已報到') tr.classList.add('checked-in');
-      tr.innerHTML=`<td>${item.id}</td><td>${item.name}</td><td>${item.title}</td><td>${item.role}</td><td>${item.status}</td><td>${item.time}</td><td>${item.note}</td>`;
-      tbody.appendChild(tr);
+async function fetchCheckinData(){
+  try{
+    tableBody.innerHTML=`<tr><td colspan="7" class="text-center text-muted">資料更新中...</td></tr>`;
+    const res=await fetch(SCRIPT_URL);
+    const data=await res.json();
+    if(!data||data.length===0){tableBody.innerHTML=`<tr><td colspan="7" class="text-center text-muted">目前尚無報到資料</td></tr>`;statsEl.textContent='';return;}
+    tableBody.innerHTML='';
+    let total=0,internalTotal=0,guestTotal=0,internalCheckedIn=0,guestCheckedIn=0;
+    data.forEach((p,i)=>{
+      if(!p.name||p.name.trim()==='')return;
+      total++;
+      const row=document.createElement('tr');
+      const isGuest=p.unit&&p.unit.includes('台南市醫師公會');
+      const isChecked=p.status==='已報到';
+      if(isGuest){guestTotal++;if(isChecked)guestCheckedIn++;}else{internalTotal++;if(isChecked)internalCheckedIn++;}
+      if(isChecked)row.classList.add('checked');
+      row.innerHTML=`
+        <td>${i+1}</td>
+        <td>${p.name||'—'}</td>
+        <td>${p.department||'—'}</td>
+        <td>${p.unit||'外賓 / 未填單位'}</td>
+        <td>${p.status||'未報到'}</td>
+        <td class="small-text">${p.time?new Date(p.time).toLocaleString():'—'}</td>
+        <td>${p.remark||''}</td>`;
+      tableBody.appendChild(row);
     });
-  })
-  .catch(err=>console.error(err));
-  counter=30;
+    const totalChecked=internalCheckedIn+guestCheckedIn;
+    const rate=total>0?((totalChecked/total)*100).toFixed(1):0;
+    statsEl.innerHTML=`總報名人數:${total} | 已報到:${totalChecked} | 未報到:${total-totalChecked} | 出席率:${rate}%<br>
+      院內已報到/未報到:${internalCheckedIn}/${internalTotal-internalCheckedIn} | 外賓已報到/未報到:${guestCheckedIn}/${guestTotal-guestCheckedIn}`;
+  }catch(err){
+    console.error(err);
+    tableBody.innerHTML=`<tr><td colspan="7" class="text-danger">⚠️ 資料載入失敗</td></tr>`;
+    statsEl.textContent='';
+  }
+  counter=20;
 }
 
-// 提交報到
-document.getElementById('checkinForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const id=Math.floor(Math.random()*10000);
-  const name=document.getElementById('name').value;
-  const title=document.getElementById('title').value;
-  const role=document.getElementById('role').value;
-  fetch(WEB_APP_URL,{
-    method:'POST',
-    body: JSON.stringify({id, name, title, role}),
-  })
-  .then(res=>res.json())
-  .then(()=>{ loadCheckinList(); })
-  .catch(err=>console.error(err));
-  e.target.reset();
-});
+function columnFilter(colIndex, value){
+  const rows=tableBody.getElementsByTagName('tr');
+  const filter=value.toLowerCase();
+  for(let row of rows){
+    const cell=row.cells[colIndex]?.textContent.toLowerCase()||'';
+    row.style.display=cell.includes(filter)?'':'none';
+  }
+}
 
-// 自動倒數刷新
-let counter=30;
-const countdownEl=document.getElementById('countdown');
+function filterTable(){
+  const filter=document.getElementById('globalSearch').value.toLowerCase();
+  const rows=tableBody.getElementsByTagName('tr');
+  for(let row of rows){
+    const text=row.textContent.toLowerCase();
+    row.style.display=text.includes(filter)?'':'none';
+  }
+}
+
 setInterval(()=>{
   counter--;
-  if(counter<=0) loadCheckinList();
+  if(counter<=0)fetchCheckinData();
   countdownEl.textContent=`⏳ ${counter} 秒後自動更新`;
 },1000);
 
-// 初始化載入
-loadCheckinList();
+fetchCheckinData();
 </script>
+
 </body>
 </html>
-
