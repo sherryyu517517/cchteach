@@ -150,6 +150,7 @@ footer {
     <button class="refresh-btn" onclick="fetchCheckinData()">⟳ 手動更新名單</button>
     <span id="countdown" class="timer"></span>
   </div>
+    <input id="globalSearch" type="text" class="form-control w-50 mx-auto mb-3" placeholder="🔍 全欄搜尋（姓名、科別、單位、狀態）" onkeyup="filterTable()">
 </div>
 
 <div id="stats"></div>
@@ -285,4 +286,5 @@ fetchCheckinData();
 
 </body>
 </html>
+
 
