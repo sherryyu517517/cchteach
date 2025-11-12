@@ -14,21 +14,10 @@ body {
   overflow-x:hidden;
   position:relative;
 }
-
 /* 漂浮泡泡 */
-.bubble {
-  position:absolute;
-  border-radius:50%;
-  opacity:0.5;
-  pointer-events:none;
-  z-index:0;
-}
+.bubble { position:absolute; border-radius:50%; opacity:0.5; pointer-events:none; z-index:0; }
 
-.navbar {
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(10px);
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
+.navbar { background: rgba(10,10,10,0.85); backdrop-filter: blur(10px); border-bottom:1px solid rgba(255,255,255,0.1); }
 .navbar-brand, .nav-link { color:#D8BFD8 !important; font-weight:700; }
 .nav-link:hover, .nav-link.active { color:#9370DB !important; }
 
@@ -36,68 +25,28 @@ h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
 
 .card { background: rgba(255,255,255,0.9); border-radius:15px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); margin-bottom:40px; position:relative; z-index:1; }
 
-.refresh-btn {
-  background: linear-gradient(90deg,#4B0082,#7B68EE);
-  color:#fff;
-  border:none;
-  font-weight:600;
-  border-radius:10px;
-  padding:10px 25px;
-  transition:0.3s;
-}
-.refresh-btn:hover {
-  background: linear-gradient(90deg,#7B68EE,#9370DB);
-  transform:scale(1.05);
-}
+.refresh-btn { background: linear-gradient(90deg,#4B0082,#7B68EE); color:#fff; border:none; font-weight:600; border-radius:10px; padding:10px 25px; transition:0.3s; }
+.refresh-btn:hover { background: linear-gradient(90deg,#7B68EE,#9370DB); transform:scale(1.05); }
 
 .timer { font-size:0.9rem; color:#4B0082; }
 
 /* 表格設定 */
-.table-responsive {
-  max-height: 600px;
-  overflow-y: auto;
-}
-#checkinTable thead.table-dark {
-  background-color: #D2B48C !important;
-  color: #4B0082 !important;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
+.table-responsive { max-height: 600px; overflow-y: auto; }
+#checkinTable thead.table-dark { background-color: #D2B48C !important; color: #4B0082 !important; position: sticky; top: 0; z-index: 2; }
 #checkinTable tbody tr:nth-child(even) { background-color: #F3E8FF; }
 #checkinTable tbody tr:nth-child(odd) { background-color: #FFFFFF; }
 
 /* 已報到者樣式 */
-.checked td {
-  font-weight:700 !important;
-  color:#1E90FF !important;
-  background-color:#EAF6FF !important;
-}
+.checked td { font-weight:700 !important; color:#1E90FF !important; background-color:#EAF6FF !important; }
 
 /* 篩選欄位 */
-.filter-input {
-  width: 100%;
-  font-size: 0.85rem;
-  padding: 3px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-}
+.filter-input { width: 100%; font-size: 0.85rem; padding: 3px; border: 1px solid #ccc; border-radius: 5px; text-align: center; }
 
 /* 小字體 */
-.small-text {
-  font-size: 0.85rem;
-  color: #555;
-}
+.small-text { font-size: 0.85rem; color: #555; }
 
 /* 統計區塊 */
-#stats { 
-  font-size:1rem;
-  font-weight:600;
-  margin-bottom:15px;
-  text-align:center;
-  color:#4B0082;
-}
+#stats { font-size:1rem; font-weight:600; margin-bottom:15px; text-align:center; color:#4B0082; }
 
 /* 序號與報到時間欄設定 */
 #checkinTable th:first-child,
@@ -110,21 +59,10 @@ h2 { color:#4B0082; font-weight:600; text-shadow:1px 1px 3px rgba(0,0,0,0.2); }
 }
 
 /* 控制欄寬 */
-#checkinTable th:first-child, #checkinTable td:first-child {
-  width: 60px;
-}
-#checkinTable th:nth-child(6), #checkinTable td:nth-child(6) {
-  width: 160px;
-}
+#checkinTable th:first-child, #checkinTable td:first-child { width: 60px; }
+#checkinTable th:nth-child(6), #checkinTable td:nth-child(6) { width: 160px; }
 
-footer {
-  text-align:center;
-  color:#555;
-  background: rgba(255,255,255,0.1);
-  padding:15px;
-  font-size:0.95rem;
-  margin-top:60px;
-}
+footer { text-align:center; color:#555; background: rgba(255,255,255,0.1); padding:15px; font-size:0.95rem; margin-top:60px; }
 </style>
 </head>
 <body>
@@ -168,7 +106,11 @@ footer {
     <button class="refresh-btn" onclick="fetchCheckinData()">⟳ 手動更新名單</button>
     <span id="countdown" class="timer"></span>
   </div>
-    <input id="globalSearch" type="text" class="form-control w-50 mx-auto mb-3" placeholder="🔍 全欄搜尋（姓名、科別、單位、狀態）" onkeyup="filterTable()">
+  <!-- 全欄搜尋 + 搜尋按鈕 -->
+  <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+    <input id="globalSearch" type="text" class="form-control w-50" placeholder="🔍 全欄搜尋（姓名、科別、單位、狀態）">
+    <button class="refresh-btn" onclick="filterTable()">🔍 搜尋</button>
+  </div>
 </div>
 
 <div id="stats"></div>
@@ -179,12 +121,12 @@ footer {
       <thead class="table-dark">
         <tr>
           <th>序號</th>
-          <th>姓名<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(1, this.value)"></th>
-          <th>科別<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(2, this.value)"></th>
-          <th>單位/身分<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3, this.value)"></th>
-          <th>報到狀態<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(4, this.value)"></th>
+          <th>姓名<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(1,this.value)"></th>
+          <th>科別<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(2,this.value)"></th>
+          <th>單位/身分<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(3,this.value)"></th>
+          <th>報到狀態<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(4,this.value)"></th>
           <th>報到時間</th>
-          <th>備註<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(6, this.value)"></th>
+          <th>備註<br><input type="text" class="filter-input" placeholder="篩選" onkeyup="columnFilter(6,this.value)"></th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -207,8 +149,7 @@ const bubbleColors=['#E6E6FA','#D8BFD8','#F0F8FF','#DDA0DD','#DA70D6','#9370DB']
 const bubbles=[]; const bubbleCount=40;
 let width=window.innerWidth, height=window.innerHeight;
 for(let i=0;i<bubbleCount;i++){
-  let b=document.createElement('div');
-  b.classList.add('bubble');
+  let b=document.createElement('div'); b.classList.add('bubble');
   let size=Math.random()*40+20;
   b.style.width=size+'px'; b.style.height=size+'px';
   b.style.left=Math.random()*width+'px'; b.style.top=Math.random()*height+'px';
@@ -216,22 +157,18 @@ for(let i=0;i<bubbleCount;i++){
   document.body.appendChild(b);
   bubbles.push({el:b,x:parseFloat(b.style.left),y:parseFloat(b.style.top),dx:(Math.random()-0.5)*0.5,dy:-Math.random()*0.7-0.2});
 }
-function animateBubbles(){
-  bubbles.forEach(b=>{
-    b.x+=b.dx; b.y+=b.dy;
-    if(b.y+parseFloat(b.el.style.height)<0){b.y=height; b.x=Math.random()*width;}
-    if(b.x<0) b.x=width; if(b.x>width) b.x=0;
-    b.el.style.left=b.x+'px'; b.el.style.top=b.y+'px';
-  });
-  requestAnimationFrame(animateBubbles);
-}
+function animateBubbles(){ bubbles.forEach(b=>{ b.x+=b.dx;b.y+=b.dy;
+  if(b.y+parseFloat(b.el.style.height)<0){b.y=height;b.x=Math.random()*width;}
+  if(b.x<0)b.x=width;if(b.x>width)b.x=0;
+  b.el.style.left=b.x+'px';b.el.style.top=b.y+'px';
+}); requestAnimationFrame(animateBubbles); }
 animateBubbles();
 window.addEventListener('resize',()=>{width=window.innerWidth;height=window.innerHeight;});
 </script>
 
-<!-- 資料載入 -->
+<!-- 資料載入與篩選 -->
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZxj65rXlINh9E9Ll_ukdTjAjrvPkooHyOHniPZ5kp-OMOdE15hVkGqBtWqRr2Wepe/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwZxj65rXlINh9E9Ll_ukdTjAjrvPkooHyOHniPZ5kp-OMOdE15hVkGqBtWqRr2Wepe/exec";
 const tableBody=document.getElementById('tableBody');
 const countdownEl=document.getElementById('countdown');
 const statsEl=document.getElementById('stats');
@@ -253,14 +190,10 @@ async function fetchCheckinData(){
       const isChecked=p.status==='已報到';
       if(isGuest){guestTotal++;if(isChecked)guestCheckedIn++;}else{internalTotal++;if(isChecked)internalCheckedIn++;}
       if(isChecked)row.classList.add('checked');
-      row.innerHTML=`
-        <td>${i+1}</td>
-        <td>${p.name||'—'}</td>
-        <td>${p.department||'—'}</td>
-        <td>${p.unit||'外賓 / 未填單位'}</td>
-        <td>${p.status||'未報到'}</td>
-        <td class="small-text">${p.time?new Date(p.time).toLocaleString():'—'}</td>
-        <td>${p.remark||''}</td>`;
+      row.innerHTML=`<td>${i+1}</td><td>${p.name||'—'}</td><td>${p.department||'—'}</td>
+      <td>${p.unit||'外賓 / 未填單位'}</td><td>${p.status||'未報到'}</td>
+      <td class="small-text">${p.time?new Date(p.time).toLocaleString():'—'}</td>
+      <td>${p.remark||''}</td>`;
       tableBody.appendChild(row);
     });
     const totalChecked=internalCheckedIn+guestCheckedIn;
@@ -275,20 +208,23 @@ async function fetchCheckinData(){
   counter=20;
 }
 
-function columnFilter(colIndex, value){
+function columnFilter(colIndex,value){
+  const rows=tableBody.getElementsByTagName('tr'); const filter=value.toLowerCase();
+  for(let row of rows){const cell=row.cells[colIndex]?.textContent.toLowerCase()||'';row.style.display=cell.includes(filter)?'':'none';}
+}
+
+// 全欄搜尋（姓名、科別、單位、報到狀態）
+function filterTable(){
+  const filter=document.getElementById('globalSearch').value.toLowerCase();
   const rows=tableBody.getElementsByTagName('tr');
-  const filter=value.toLowerCase();
   for(let row of rows){
-    const cell=row.cells[colIndex]?.textContent.toLowerCase()||'';
-    row.style.display=cell.includes(filter)?'':'none';
+    const text=row.cells[1].textContent.toLowerCase()+' '+row.cells[2].textContent.toLowerCase()+' '+
+               row.cells[3].textContent.toLowerCase()+' '+row.cells[4].textContent.toLowerCase();
+    row.style.display=text.includes(filter)?'':'none';
   }
 }
 
-setInterval(()=>{
-  counter--;
-  if(counter<=0)fetchCheckinData();
-  countdownEl.textContent=`⏳ ${counter} 秒後自動更新`;
-},1000);
+setInterval(()=>{ counter--; if(counter<=0)fetchCheckinData(); countdownEl.textContent=`⏳ ${counter} 秒後自動更新`; },1000);
 
 fetchCheckinData();
 </script>
